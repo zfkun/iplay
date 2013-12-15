@@ -1,0 +1,10 @@
+{
+    "name": "iPlay",
+    "description": "remote airplay player for",
+    "version": "0.0.1",
+    "main": "index.html",
+    "author": "zfkun <zfkun@msn.com>",
+    "dependencies": {
+        "mdns": "~1.1.0"
+    }
+}
