@@ -1,7 +1,7 @@
 /**
  * iPlay
  * 
- * @file apple tv server
+ * @file apple tv server for test
  * @author zfkun(zfkun@msn.com)
  */
 var mdns = require('mdns');

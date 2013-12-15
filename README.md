@@ -27,6 +27,7 @@ remote airplay player for [AppleTV](http://www.apple.com/appletv/).
 
 ### Help
 
++ [Unofficial AirPlay Protocol Specification](http://nto.github.io/AirPlay.html)
 + [HLS(HTTP Live Streaming)](http://tools.ietf.org/html/draft-pantos-http-live-streaming-12)
 + [ffmpeg build for ios](http://www.cocoachina.com/bbs/read.php?tid=142628&page=1)
 

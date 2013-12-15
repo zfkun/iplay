@@ -1,7 +1,7 @@
 /**
  * iPlay
  * 
- * @file HTTP Live Stream
+ * @file HTTP Live Streaming
  * @author zfkun(zfkun@msn.com)
  */
 var fs = require( 'fs' );
@@ -201,7 +201,8 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
         // 'X-Apple-Session-ID': '1bd6ceeb-fffd-456c-a09c-996053a7a08c'
     };
     var body = [];
-    var videoInfo = this.videoInfo;
+    var videoDuration = this.videoInfo.format.duration;
+    var tsDuration = this.tsDuration;
 
     console.info( '[HLS]: ', uri.pathname );//, request.headers );
 
@@ -227,14 +228,15 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
         body.push('#EXTM3U');
         body.push('#EXT-X-VERSION:3');
         // body.push('#EXT-X-MEDIA-SEQUENCE:0');
-        body.push('#EXT-X-TARGETDURATION:10');
+        body.push('#EXT-X-TARGETDURATION:' + tsDuration);
         body.push('#EXT-X-PLAYLIST-TYPE:VOD');
         // body.push('#EXT-X-ALLOW-CACHE:YES');
         
-        var tsSize = Math.ceil( parseFloat( videoInfo.format.duration, 10) / this.tsDuration );
+        var tsSize = Math.ceil( parseFloat( videoDuration, 10) / tsDuration );
         // var lastDuration = tsSize % 10;
         for ( var i = 1; i < tsSize; i++) {
-            body.push('#EXTINF:10,');
+            // TODO 最后一个分片的时长不能保证正确
+            body.push('#EXTINF:' + tsDuration + ',');
             body.push('/stream/1/' + i + '.ts');
         }
 
@@ -250,10 +252,6 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
         response.end();
     }
     else if ( /^\/stream\/1\//.test( uri.pathname ) ) {
-        // var basepath = '/Users/fankun/git/zfkun/iplay/video/';
-        // var fileName = path.basename( uri.pathname );
-        // var filePath = basepath + fileName;
-
         // header['Connection'] = 'Keep-Alive';
         header['Content-Type'] = 'video/MP2T';
         response.writeHead( 200, header );

@@ -1,3 +1,9 @@
+/**
+ * iPlay
+ * 
+ * @file Bonjour Server
+ * @author zfkun(zfkun@msn.com)
+ */
 var mdns = require('mdns');
 
 exports.create = function ( options ) {

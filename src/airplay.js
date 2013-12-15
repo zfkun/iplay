@@ -1,7 +1,7 @@
 /**
  * iPlay
  * 
- * @file HTTP Live Stream
+ * @file airplay protocol
  * @author zfkun(zfkun@msn.com)
  */
 var emitter = require( 'events' ).EventEmitter;
