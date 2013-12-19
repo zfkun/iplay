@@ -87,14 +87,46 @@ app.initDroper = function () {
 };
 
 app.initController = function () {
+    var isPlaying = 0;
     document.getElementById('tvPlay').onclick = function () {
+        if ( !app.device ) return;
+
         // console.info( app, app.hls, app.browser, app.airplay );
-        if ( app.device ) {
+        if ( isPlaying === 0) {
+            this.textContent = '暂停';
             app.device.play( app.hls.getURI(), 0, function () {
                 console.info( '开始播放啦~~' );
                 app.updateStatus();
+                isPlaying = 1;
             });
         }
+        // NOTE: only 0 and 1 seem to be supported for most media types
+        // rate: 0 = pause, 1 = resume
+        else if ( isPlaying === 1 ) {
+            this.textContent = '播放';
+            app.device.rate( 0, function () {
+                console.info( '暂停播放啦~~' );
+                isPlaying = 2;
+            });    
+        }
+        else if ( isPlaying === 2 ) {
+            this.textContent = '暂停';
+            app.device.rate( 1, function ( res ) {
+                console.info( '恢复播放啦~~' );
+                isPlaying = 1;
+            });
+        }
+    };
+    document.getElementById('tvStop').onclick = function () {
+        if ( !app.device ) return;
+
+        document.getElementById('tvPlay').textContent = '播放';
+        app.device.stop( function () {
+            console.info( '终止播放啦~~' );
+            isPlaying = 0;
+
+            clearTimeout( app.statusTimer );
+        });
     };
 };
 
@@ -117,7 +149,7 @@ app.updateStatus = function () {
         // console.log( 'playstatus:', info );
 
         // 正在播放时才更新
-        if ( info.readyToPlay ) {
+        if ( info && info.readyToPlay ) {
             var out = '';
             out +=
                 '<p>' +
@@ -145,7 +177,7 @@ app.updateStatus = function () {
         }
 
         // next
-        setTimeout( app.updateStatus.bind( app ), 1000 );
+        app.statusTimer = setTimeout( app.updateStatus.bind( app ), 1000 );
     });
 };
 

@@ -31,8 +31,8 @@ remote airplay player for [AppleTV](http://www.apple.com/appletv/).
 + [x] 代码树立完善
 + [] UI完善
 + [] 实时截图显示
-+ [] 播放进度、暂停、快进
-+ [] airplay 各事件通知
++ [x] 播放进度、暂停、停止等
++ [] airplay 事件通知
 + [] 外挂字幕
 
 
