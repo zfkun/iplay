@@ -5,17 +5,12 @@
  * @file main
  * @author zfkun(zfkun@msn.com)
  */
-
-var bonjour = require( './src/bonjour' );
-var hls = require( './src/hls' );
-var tv = require( './src/tv' );
-var airplay = require( './src/airplay' );
+var airplay = require( 'airplay' );
 
 var app = {
     // browser: null,
     // hls: null,
-    // airplay: null
-    // service: {}
+    // device: {}
 };
 
 app.log = function () {
@@ -23,113 +18,137 @@ app.log = function () {
     var el = document.getElementById('log');
     el.innerHTML += '<p>' + [].slice.call(arguments).join(' ') + '</p>';
 };
-app.connectTV = function ( ) {
-    if ( !app.service ) {
-        app.log( 'AppleTV not found !!' );
-        return;
-    }
-    else if ( app.airplay ) {
-        app.log( 'AppleTV had connected !!' );
-        return;
-    }
-
-    // init AirPlay
-    app.airplay = airplay.create({
-        host: app.service.addresses[1],
-        port: app.service.port
-    }).connect(function ( ap ) {
-        app.log( 'AppleTV Connected !!' );
-    });
-};
 
 app.init = function () {
-    // 启动一个模拟的 AppleTV
-    // this.tv = tv.create().start();
+    // browser
+    app.initBrowser();
 
-    // hls
-    app.hls = hls.create();
+    // droper
+    app.initDroper();
+
+    // controller
+    app.initController();
+};
+
+app.initHLS = function () {
+    app.hls = airplay.createHLS();
     app.hls.on( 'start', function () {
         app.log( 'HLS start, ', this.baseURI );
-    }).on( 'stop', function () {
+    });
+    app.hls.on( 'stop', function () {
         app.log( 'HLS stop' );
     });
     app.hls.start( 7001 );
+};
 
+app.initBrowser = function () {
+    app.browser = airplay.createBrowser();
+    app.browser.on( 'deviceOn', function( device ) {
+        app.log( 'device online:', device.getInfo() );
 
-    // dns service browser
-    app.browser = bonjour.create();
-    app.browser.on( 'serviceUp', function( service ) {
-        app.log( 'service online:', service );
+        app.device = device;
+        app.device.on( 'ping', function () { app.log( 'device pingback ~' ); });
+        app.log( 'AppleTV Connected !!' );
+        
+        app.updateList( device.getInfo() );
 
-        if ( !app.service ) {
-            app.service = service;
-            app.connectTV();
-        }
-
-        updateServiceList( service );
+        app.initHLS();
+    });
+    app.browser.on( 'start', function () {
+        app.log( 'Browser start' );
+    });
+    app.browser.on( 'stop', function () {
+        app.log( 'Browser stop' );
     });
     app.browser.start();
-    app.log( 'Bonjour start' );
+};
 
+app.initDroper = function () {
+    var droper = document.getElementById( 'drop' );
+    droper.addEventListener( 'dragover', onFileDrag, false );
+    droper.addEventListener( 'dragleave', onFileDrag, false );
+    droper.addEventListener( 'drop', onFileDrop, false );
 
+    function onFileDrag( e ) {
+        e.preventDefault();
+        e.target.className = (e.type === "dragover" ? "hover" : "");
+    }
 
-    // TODO: test
-    // document.getElementById('tvConnect').onclick = function () {
-    //     app.connectTV();
-    // };
+    function onFileDrop( e ) {
+        e.preventDefault();
+
+        var file = (e.target.files || e.dataTransfer.files)[0];
+        app.log( 'drop video:', file.path );
+
+        app.hls.open( file.path, function ( info ) {
+            app.log( 'HLS opened:', info );
+        });
+    }
+};
+
+app.initController = function () {
     document.getElementById('tvPlay').onclick = function () {
         // console.info( app, app.hls, app.browser, app.airplay );
-        if ( app.airplay ) {
-            app.airplay.play( app.hls.getURI() );
+        if ( app.device ) {
+            app.device.play( app.hls.getURI(), 0, function () {
+                console.info( '开始播放啦~~' );
+                app.updateStatus();
+            });
         }
     };
-
-    var droper = document.getElementById( 'drop' );
-    droper.addEventListener("dragover", onFileDragOver, false);
-    droper.addEventListener("dragleave", onFileDragOver, false);
-    droper.addEventListener("drop", onFileDrop, false);
-
 };
 
 app.dispose = function () {
     app.browser.stop();
     app.hls.stop();
-    // app.tv.stop();
-    document.getElementById('playVideo').onclick = null;
+    document.getElementById( 'playVideo' ).onclick = null;
+    app.browser = null;
+    app.hls = null;
+    app.device = null;
 };
 
+app.updateList = function ( deviceInfo ) {
+    var select = document.getElementById( 'devices' );
+    select.add( new Option( deviceInfo.name, '' ) );
+};
 
+app.updateStatus = function () {
+    app.device.status( function ( info ) {
+        // console.log( 'playstatus:', info );
 
-function updateServiceList( services ) {
-    var select = document.getElementById('services');
+        // 正在播放时才更新
+        if ( info.readyToPlay ) {
+            var out = '';
+            out +=
+                '<p>' +
+                '播放进度: ' +
+                Math.ceil( info.position ) +
+                ' / ' +
+                info.duration +
+                '</p>';
 
-    if ( !Array.isArray( services ) ) {
-        services = [ services ];
-    }
+            if ( info.loadedTimeRanges ) {
+                out +=
+                    '<p>' +
+                    '加载进度: ' +
+                    Math.ceil(
+                        info.loadedTimeRanges[0].start +
+                        info.loadedTimeRanges[0].duration
+                    ) +
+                    ' / ' +
+                    info.duration +
+                    '</p>';
+            }
 
-    services.forEach(function ( s ) {
-        select.add( new Option( s.name, '' ) );
+            var node = document.querySelector('.control .status');
+            node.innerHTML = out;
+        }
+
+        // next
+        setTimeout( app.updateStatus.bind( app ), 1000 );
     });
+};
 
-}
-
-
-function onFileDragOver( e ) {
-    e.stopPropagation();
-    e.preventDefault();
-    e.target.className = (e.type === "dragover" ? "hover" : "");
-}
-
-function onFileDrop( e ) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    var file = (e.target.files || e.dataTransfer.files)[0];
-    app.log( 'drop video:', file.path );
-    app.hls.open( file.path, function ( info ) {
-        app.log( 'HLS opened:', info );
-    });
-}
 
 
 

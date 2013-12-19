@@ -1,10 +1,29 @@
 {
     "name": "iPlay",
-    "description": "remote airplay player for",
-    "version": "0.0.1",
+    "description": "remote airplay player for AppleTV",
+    "version": "0.0.2",
     "main": "index.html",
+    "window": {
+        "toolbar": true,
+        "width": 900,
+        "height": 600,
+        "min_width": 800,
+        "min_height": 500
+    },
     "author": "zfkun <zfkun@msn.com>",
     "dependencies": {
-        "mdns": "~1.1.0"
-    }
+        "airplay": "https://github.com/zfkun/node-airplay/tarball/master"
+    },
+    "keywords": [
+        "apple",
+        "mac",
+        "media",
+        "airplay",
+        "player"
+    ],
+    "scripts": {
+        "install": "cd node_modules/airplay/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../",
+        "update": "cd node_modules/airplay/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../"
+    },
+    "repository": "git://github.com/zfkun/iplay.git"
 }
