@@ -38,6 +38,10 @@ app.initHLS = function () {
     app.hls.on( 'stop', function () {
         app.log( 'HLS stop' );
     });
+    app.hls.on( 'stream', function ( index, size ) {
+        app.videoSegmentIndex = index;
+        app.videoSegmentSize = size;
+    });
     app.hls.start( 7001 );
 };
 
@@ -171,6 +175,14 @@ app.updateStatus = function () {
                     info.duration +
                     '</p>';
             }
+
+            out +=
+                '<p>' +
+                '分段进度：' +
+                ( app.videoSegmentIndex || 0 ) + 
+                ' / ' +
+                ( app.videoSegmentSize || 1 ) +
+                '</p>';
 
             var node = document.querySelector('.control .status');
             node.innerHTML = out;
