@@ -12,7 +12,7 @@
     },
     "author": "zfkun <zfkun@msn.com>",
     "dependencies": {
-        "airplay": "https://github.com/zfkun/node-airplay/tarball/master"
+        "airplay2": "~0.1.2"
     },
     "keywords": [
         "apple",
@@ -22,8 +22,8 @@
         "player"
     ],
     "scripts": {
-        "install": "cd node_modules/airplay/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../",
-        "update": "cd node_modules/airplay/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../"
+        "install": "cd node_modules/airplay2/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../",
+        "update": "cd node_modules/airplay2/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../"
     },
     "repository": "git://github.com/zfkun/iplay.git"
 }

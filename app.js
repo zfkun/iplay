@@ -5,7 +5,7 @@
  * @file main
  * @author zfkun(zfkun@msn.com)
  */
-var airplay = require( 'airplay' );
+var airplay = require( 'airplay2' );
 
 var app = {
     // browser: null,
