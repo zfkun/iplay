@@ -2,10 +2,7 @@ iPlay
 =================
 
 remote airplay player for [AppleTV](http://www.apple.com/appletv/).
-
-### Version
-
-`0.0.2`
+used by [node-airplay](https://github.com/zfkun/node-airplay).
 
 ### Requirements
 
@@ -13,7 +10,7 @@ remote airplay player for [AppleTV](http://www.apple.com/appletv/).
 * [AppleTV](http://www.apple.com/appletv/)
 * [node-webkit](https://github.com/rogerwang/node-webkit)
 * [nw-gyp](https://github.com/rogerwang/nw-gyp)
-* [npm](https://npmjs.org/)
+* [node-airplay](https://github.com/zfkun/node-airplay)
 
 
 ### Usage

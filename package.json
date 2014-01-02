@@ -1,7 +1,7 @@
 {
-    "name": "iPlay",
+    "name": "iplay",
     "description": "remote airplay player for AppleTV",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "index.html",
     "window": {
         "toolbar": true,
@@ -12,14 +12,16 @@
     },
     "author": "zfkun <zfkun@msn.com>",
     "dependencies": {
-        "airplay2": "~0.1.2"
+        "airplay2": "~0.1.3"
     },
     "keywords": [
         "apple",
         "mac",
         "media",
         "airplay",
-        "player"
+        "player",
+        "hls",
+        "webkit"
     ],
     "scripts": {
         "install": "cd node_modules/airplay2/node_modules/mdns && nw-gyp rebuild --target=0.8.2 && cd ../../../../",
