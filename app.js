@@ -38,6 +38,9 @@ app.initHLS = function () {
     app.hls.on( 'stop', function () {
         app.log( 'HLS stop' );
     });
+    app.hls.on( 'request', function ( req ) {
+        app.log( 'HLS request, ', req );
+    });
     app.hls.on( 'stream', function ( index, size ) {
         app.videoSegmentIndex = index;
         app.videoSegmentSize = size;
