@@ -1,4 +1,4 @@
-iPlay
+iPlay [![NPM version](https://badge.fury.io/js/iplay.png)](http://badge.fury.io/js/iplay) [![DevDependencies Status](https://david-dm.org/zfkun/node-airplay/dev-status.png)](https://david-dm.org/zfkun/node-airplay#info=devDependencies)
 =================
 
 remote airplay player for [AppleTV](http://www.apple.com/appletv/).
@@ -25,12 +25,12 @@ used by [node-airplay](https://github.com/zfkun/node-airplay).
 
 ### TODO
 
-+ [x] 代码树立完善
-+ [] UI完善
-+ [] 实时截图显示
-+ [x] 播放进度、暂停、停止等
-+ [] airplay 事件通知
-+ [] 外挂字幕
+[x] 代码梳理完善
+[ ] UI完善
+[ ] 实时截图显示
+[x] 播放进度、暂停、停止等
+[ ] airplay 事件通知
+[ ] 外挂字幕
 
 
 
