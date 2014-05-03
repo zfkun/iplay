@@ -8,6 +8,7 @@
 var airplay = require( 'airplay2' );
 
 var app = {
+    // file: null,
     // browser: null,
     // hls: null,
     // device: {}
@@ -88,6 +89,7 @@ app.initDroper = function () {
         app.log( 'drop video:', file.path );
 
         app.hls.open( file.path, function ( info ) {
+            app.file = info;
             app.log( 'HLS opened:', info );
         });
     }
@@ -96,7 +98,7 @@ app.initDroper = function () {
 app.initController = function () {
     var isPlaying = 0;
     document.getElementById('tvPlay').onclick = function () {
-        if ( !app.device ) return;
+        if ( !app.device || !app.file ) return;
 
         // console.info( app, app.hls, app.browser, app.airplay );
         if ( isPlaying === 0) {
@@ -125,7 +127,7 @@ app.initController = function () {
         }
     };
     document.getElementById('tvStop').onclick = function () {
-        if ( !app.device ) return;
+        if ( !app.device || !app.file ) return;
 
         document.getElementById('tvPlay').textContent = '播放';
         app.device.stop( function () {
