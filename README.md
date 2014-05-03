@@ -27,8 +27,11 @@ used by [node-airplay](https://github.com/zfkun/node-airplay).
 
 [x] 代码梳理完善
 [ ] UI完善
-[ ] 实时截图显示
-[x] 播放进度、暂停、停止等
+[ ] 实时截图
+[x] 播放进度
+[x] 暂停
+[x] 停止
+[ ] 快进
 [ ] airplay 事件通知
 [ ] 外挂字幕
 
