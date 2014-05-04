@@ -1,4 +1,4 @@
-iPlay [![NPM version](https://badge.fury.io/js/iplay.png)](http://badge.fury.io/js/iplay) [![DevDependencies Status](https://david-dm.org/zfkun/node-airplay/dev-status.png)](https://david-dm.org/zfkun/node-airplay#info=devDependencies)
+iPlay [![NPM version](https://badge.fury.io/js/iplay.svg)](http://badge.fury.io/js/iplay) [![DevDependencies Status](https://david-dm.org/zfkun/node-airplay/dev-status.png)](https://david-dm.org/zfkun/node-airplay#info=devDependencies)
 =================
 
 remote airplay player for [AppleTV](http://www.apple.com/appletv/).
