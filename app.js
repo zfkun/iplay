@@ -200,6 +200,9 @@ app.updateStatus = function () {
 
 
 
+// prevent default behavior from changing page on dropped file
+window.ondragover = function(e) { e.preventDefault(); return false; };
+window.ondrop = function(e) { e.preventDefault(); return false; };
 
 window.onload = app.init;
 window.beforeunload = app.dispose;
